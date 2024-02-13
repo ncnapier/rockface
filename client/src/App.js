@@ -1,28 +1,35 @@
-import React from 'react';
+import React from "react";
 // import { BrowserRouter as Router, Route} from 'react-router-dom';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Container } from 'semantic-ui-react';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Container } from "semantic-ui-react";
 
 // import 'semantic-ui-css/semantic.min.scc';
-import './App.css';
+import "./App.css";
 
-import MenuBar from './components/MenuBar';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import MenuBar from "./components/MenuBar";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import { useQuery, gql } from '@apollo/client';
+
+
+
+
+
+
+
 
 function App() {
   return (
     <BrowserRouter>
       <Container>
         <MenuBar />
-          <Routes>
-            <Route exact path = '/' Component={Home}/>
-            <Route exact path='/login' Component={Login}/>
-            <Route exact path='/register' Component={Register}/>
-          </Routes>
-          
-          
+        <Routes>
+          <Route exact path="/" Component={Home} />
+
+          <Route exact path="/login" Component={Login} />
+          <Route exact path="/register" Component={Register} />
+        </Routes>
       </Container>
     </BrowserRouter>
   );

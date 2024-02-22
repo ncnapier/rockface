@@ -3,116 +3,65 @@ import React from "react";
 
 // import { gql } from "@apollo/client";
 import { Grid, GridRow, GridColumn, Image } from "semantic-ui-react";
-import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloProvider, useQuery } from "@apollo/client";
 import { FETCH_POSTS_QUERY } from "../util/graphql";
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
+import PostCard from '../components/PostCard'
 
 function Home() {
-  //   const {
-  //     loading,
-  //     data: { getPosts: posts },
-  //   } = useQuery(FETCH_POSTS_QUERY);
 
-  //   const client = new ApolloClient({
-  //     uri: 'http://localhost:8000/',
-  //     cache: new InMemoryCache()
-  // })
 
   const GET_POSTS = gql`
-    query getPosts {
+    query {
+        getPosts {
       id
       body
-      createdAt
       username
+      createdAt
+      commentCount
       likeCount
       likes {
         username
+        id
+        createdAt
       }
-      commentCount
       comments {
         id
-        username
         createdAt
         body
       }
+        }
     }
   `;
 
-  function DisplayPosts(){
-    const { loading, error, data } = useQuery(GET_POSTS);
+  
+const { loading, error, data } = useQuery(GET_POSTS);
 
     if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
+    if (error) return <p>Error : {error.message}</p>;
 
-  return data.locations.map(({ id, body, createdAt, username, likes, likeCount, comments, commentCount  }) => (
-    <div key={id}>
-      <h3>{body}</h3>
-      
-      <b>About this location:</b>
-    
-      <br />
-    </div>
-  ));
-  }
-
-  //   client.query({
-  //   query: gql`
-  //      query getPosts {
-  //       id
-  //       body
-  //       createdAt
-  //       username
-  //       likeCount
-  //       likes {
-  //         username
-  //       }
-  //       commentCount
-  //       comments {
-  //         id
-  //         username
-  //         createdAt
-  //         body
-  //       }
-
-  //   }
-  //   `,
-  // })
-  // .then((results) => console.log(results));
 
   return (
-    // <Grid columns={3} divided>
-    //   <Grid.Row>
-    //     <Grid.Column></Grid.Column>
-    //   </Grid.Row>
-    // </Grid>
-    <div>
-    <h2>id</h2>
-    <DisplayPosts />
-    </div>
+    <Grid columns={3} >
+        <GridRow className="page-title">
+            <h1>Recent Posts</h1>
+        </GridRow>
+    <GridRow>
+      {loading ? (
+          <h1>Loading Posts...</h1>
+      ) : (
+          data.getPosts && data.getPosts.map(post=> (
+              <GridColumn key={post.id} style={{marginBottom: '20px'}}>
+                  <PostCard post={post}/>
+              </GridColumn>
+          ))
+      )}
+    </GridRow>
+    </Grid>
   );
 }
 
-// const FETCH_POSTS_QUERY = gql`
-//   {
-//     getPosts {
-//       id
-//       body
-//       createdAt
-//       username
-//       likeCount
-//       likes {
-//         username
-//       }
-//       commentCount
-//       comments {
-//         id
-//         username
-//         createdAt
-//         body
-//       }
-//     }
-//   }
-// `;
+
 
 export default Home;

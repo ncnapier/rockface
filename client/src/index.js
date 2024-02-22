@@ -7,12 +7,17 @@
 // import App from './App'
 // import gql from 'graphql-tag';
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { ApolloClient, ApolloProvider, InMemoryCache, gql } from '@apollo/client';
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  gql,
+} from "@apollo/client";
 
 // const root = ReactDOM.createRoot(document.getElementById('root'));
 // root.render(
@@ -21,44 +26,42 @@ import { ApolloClient, ApolloProvider, InMemoryCache, gql } from '@apollo/client
 //   </React.StrictMode>
 // );
 
-
 const client = new ApolloClient({
-  uri: 'http://localhost:8000/',
-  cache: new InMemoryCache()
+  uri: "http://localhost:8000/",
+  cache: new InMemoryCache(),
 });
 
 client
   .query({
     query: gql`
-    {
-      getPosts{
-        id
-        body
-        username
-        createdAt
-        likes {
-          username
+      {
+        getPosts {
           id
-          createdAt
-        }
-        comments {
-          id
-          createdAt
           body
-          
+          username
+          createdAt
+          likes {
+            username
+            id
+            createdAt
+          }
+          comments {
+            id
+            createdAt
+            body
+          }
         }
       }
-    }
-    `
+    `,
   })
-  .then(result => console.log(result));
+  .then((result) => console.log(result));
 
-  const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <ApolloProvider client={client}>
     <App />
-  </ApolloProvider>,
+  </ApolloProvider>
 );
 // ReactDOM.render(ApolloProvider, document.getElementById('root'));
 
